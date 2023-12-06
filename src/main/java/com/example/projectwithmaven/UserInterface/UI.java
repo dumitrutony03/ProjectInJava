@@ -76,6 +76,22 @@ public class UI {
         Integer id = Integer.valueOf(scanner.nextLine());
         try {
             serviceMasini.delete(id);
+
+            List<Inchiriere> listMasiniInchiriate = serviceInchirieri.getAllEntities();
+
+            // Daca stergem masina, automat trebuie sa o stergem si din lista unde e inchiriata
+            for(int i = 0; i < listMasiniInchiriate.size(); i ++)
+            {
+                if (listMasiniInchiriate.get(i).getMasina().getId() == id) {
+
+                    int idInchiriere = listMasiniInchiriate.get(i).getId();
+                    serviceInchirieri.delete(idInchiriere);
+                    // Resetam i-ul, pentru ca avem probleme cand stergem o masina, dimensiunea Listei scade cu '1' (o unitate)
+                    // Si se pot suprapune, si apoi 'i-ul' sa treaca peste lungimea sirului,
+                    // sau exista sansa sa rateze Masini cu ID-ul care trebuie sters
+                    i = 0;
+                }
+            }
         } catch (Exception ex) {
             System.out.println(ex.toString());
         }
@@ -104,6 +120,22 @@ public class UI {
 
         try {
             serviceMasini.update(masina);
+
+            List<Inchiriere> listMasiniInchiriate = serviceInchirieri.getAllEntities();
+
+            // Daca UPDATAM masina, automat trebuie sa o UPDATAM si din lista unde e inchiriata
+            for(int i = 0; i < listMasiniInchiriate.size(); i ++)
+            {
+                if (listMasiniInchiriate.get(i).getMasina().getId() == id) {
+
+                    int idInchiriere = listMasiniInchiriate.get(i).getId();
+                    String dataInceput = listMasiniInchiriate.get(i).getDataInceput();
+                    String dataSfarsit = listMasiniInchiriate.get(i).getDataSfarsit();
+
+                    Inchiriere inchiriere = new Inchiriere(idInchiriere, masina, dataInceput, dataSfarsit);
+                    serviceInchirieri.update(inchiriere);
+                }
+            }
         } catch (Exception ex) {
             System.out.println(ex.toString());
         }

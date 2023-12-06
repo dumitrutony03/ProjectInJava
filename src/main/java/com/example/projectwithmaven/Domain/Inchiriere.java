@@ -9,6 +9,14 @@ public class Inchiriere extends Entitate {
         super(id);
         this.masina = masina;
 
+        // In cazul in care avem un Input gresit de la User, trebuie sa facem ceva de genul
+        if(dataInceput == null || dataSfarsit == null)
+        {
+            this.dataInceput = dataInceput;
+            this.dataSfarsit = dataSfarsit;
+            return;
+        }
+
         int comparamDatele = dataInceput.compareTo(dataSfarsit);
 
         if(comparamDatele <= 0) {

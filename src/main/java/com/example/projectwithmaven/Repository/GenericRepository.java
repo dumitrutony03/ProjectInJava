@@ -3,7 +3,6 @@ package com.example.projectwithmaven.Repository;
 import com.example.projectwithmaven.Domain.Entitate;
 import com.example.projectwithmaven.Repository.ExceptionRepository.DuplicateObjectException;
 import com.example.projectwithmaven.Repository.ExceptionRepository.RepositoryException;
-import com.example.projectwithmaven.Repository.IRepository;
 
 import java.util.ArrayList;
 import java.util.Iterator;
