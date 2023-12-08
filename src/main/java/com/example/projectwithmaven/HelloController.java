@@ -1,5 +1,6 @@
 package com.example.projectwithmaven;
 
+import com.example.projectwithmaven.Domain.Entitate;
 import com.example.projectwithmaven.Domain.Inchiriere;
 import com.example.projectwithmaven.Domain.Masina;
 import com.example.projectwithmaven.Repository.ExceptionRepository.RepositoryException;
@@ -10,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
+import java.util.Comparator;
 import java.util.List;
 
 public class HelloController {
@@ -30,7 +32,8 @@ public class HelloController {
 
         ObservableList<String> carNames = FXCollections.observableArrayList();
 
-        List<Masina> listaMasini = serviceMasini.getAllEntities().stream().sorted((p1, p2) -> (String.valueOf(p1.getId())).compareTo(String.valueOf(p2.getId()))).toList();
+        List<Masina> listaMasini = serviceMasini.getAllEntities().stream()
+                .sorted(Comparator.comparing(Entitate::getId)).toList();
 
         for(Masina masina : listaMasini){
             carNames.add("Masina cu ID-ul: " + masina.getId() + ", Marca: " + masina.getMarca() + ", Model: " + masina.getModel());
@@ -142,10 +145,11 @@ public class HelloController {
 
         ObservableList<String> rentedCarsNames = FXCollections.observableArrayList();
 
-        List<Inchiriere> listaMasini = serviceInchirieri.getAllEntities().stream().sorted((p1, p2) -> (String.valueOf(p1.getId())).compareTo(String.valueOf(p2.getId()))).toList();
+        List<Inchiriere> listaMasiniInchiriate = serviceInchirieri.getAllEntities().stream().
+                sorted(Comparator.comparing(Entitate::getId)).toList();
 
         System.out.println("Masini inchiriate");
-        for(Inchiriere inchiriere : listaMasini){
+        for(Inchiriere inchiriere : listaMasiniInchiriate){
             rentedCarsNames.add("Inchirierea cu ID-ul: " + inchiriere.getId() + ", " +
                     "Masina cu ID-ul: " + inchiriere.getMasina().getId() + ", " +
                     "Marca: " + inchiriere.getMasina().getMarca() + ", " +

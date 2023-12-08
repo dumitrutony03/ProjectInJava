@@ -349,7 +349,7 @@ public class UI {
     }
 
     public void start() throws RepositoryException {
-        startWith100Entities();
+//        startWith100Entities();
 
         int choice = 0;
         while (true) {
