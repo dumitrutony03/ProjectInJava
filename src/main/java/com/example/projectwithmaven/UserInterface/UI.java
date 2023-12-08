@@ -18,7 +18,7 @@ public class UI {
     }
 
     private void startWith100Entities() throws RepositoryException {
-        // Adăugăm 5 mașini si 5 inchirieri
+        // Adăugăm 100 mașini si 100 inchirieri
         List<Integer> idUriMasina = Arrays.asList(0, 1, 2, 3, 4);
         List<String> marciMasina = Arrays.asList("Dacia", "Ford", "BMW", "Audi", "Mercedes");
 
@@ -83,35 +83,30 @@ public class UI {
                     serviceMasini.add(new Masina(i, marcaMasina, modelMasina));
                     break;
             }
-        }
+        }}
 
-//        serviceMasini.add(new Masina(1, "Dacia", "Logan"));
-//        serviceMasini.add(new Masina(2, "Ford", "Focus"));
-//        serviceMasini.add(new Masina(3, "BMW", "X5"));
-//        serviceMasini.add(new Masina(4, "Audi", "A4"));
-//        serviceMasini.add(new Masina(5, "Mercedes", "C-Class"));
-//        // TODO Sa adaugam aceeasi masina la inchiriat, daca diferita data de inceput si cea de sfarsit
-//
-        // TODO De incercat sa nu adaugam o dataInceput > dataFinal, sau ceva caractere care nu s cifre
-//        serviceInchirieri.add(new Inchiriere(1, serviceMasini.findById(1), "10-01-2023", "10-01-2023"));
-//        serviceInchirieri.add(new Inchiriere(2, serviceMasini.findById(2), "11-01-2023", "20-01-2023"));
-//        serviceInchirieri.add(new Inchiriere(3, serviceMasini.findById(3), "01-02-2023", "10-02-2023"));
-//        serviceInchirieri.add(new Inchiriere(4, serviceMasini.findById(4), "21-01-2023", "30-01-2023"));
-//        serviceInchirieri.add(new Inchiriere(5, serviceMasini.findById(5), "11-02-2023", "20-02-2023"));
-    }
-
-    private void creeazaObiectInchirierePentru100DeEntitati(int i, Masina masina) throws RepositoryException {
-        int idInchiriere = i;
+    private void creeazaObiectInchirierePentru100DeEntitati(int idInchiriere, Masina masina) throws RepositoryException {
         String dataInceput, dataSfarsit;
 
-        int zi_dataInceput = new Random().nextInt(1,32);
-        int saptamana_dataInceput = new Random().nextInt(1,13);
+        String zi_dataInceput = String.valueOf(new Random().nextInt(1,32));
+        String saptamana_dataInceput = String.valueOf(new Random().nextInt(1,13));
         int an_dataInceput = new Random().nextInt(2000,2024);
 
+        if(Integer.parseInt(zi_dataInceput) >= 1 && Integer.parseInt(zi_dataInceput) <= 9)
+            zi_dataInceput = "0" + zi_dataInceput;
+        if(Integer.parseInt(saptamana_dataInceput) >= 1 && Integer.parseInt(saptamana_dataInceput) <= 9)
+            saptamana_dataInceput = "0" + saptamana_dataInceput;
+
+
         // Data de sfarsit, trebuie sa fie cel putin mai mare sau egala cu o zi fata de data de sfarsit.
-        int zi_dataSfarsit = new Random().nextInt(zi_dataInceput,32);
-        int saptamana_dataSfarsit = new Random().nextInt(saptamana_dataInceput,13);
+        String zi_dataSfarsit = String.valueOf(new Random().nextInt(Integer.parseInt(zi_dataInceput),32));
+        String saptamana_dataSfarsit = String.valueOf(new Random().nextInt(Integer.parseInt(saptamana_dataInceput),13));
         int an_dataSfarsit = new Random().nextInt(an_dataInceput,2024);
+
+        if(Integer.parseInt(zi_dataSfarsit) >= 1 && Integer.parseInt(zi_dataSfarsit) <= 9)
+            zi_dataSfarsit = "0" + zi_dataSfarsit;
+        if(Integer.parseInt(saptamana_dataSfarsit) >= 1 && Integer.parseInt(saptamana_dataSfarsit) <= 9)
+            saptamana_dataSfarsit = "0" + saptamana_dataSfarsit;
 
         dataInceput = zi_dataInceput + "-" + saptamana_dataInceput + "-" + an_dataInceput;
         dataSfarsit = zi_dataSfarsit + "-" + saptamana_dataSfarsit + "-" + an_dataSfarsit;

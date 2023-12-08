@@ -10,20 +10,30 @@ public class Inchiriere extends Entitate {
         this.masina = masina;
 
         // In cazul in care avem un Input gresit de la User, trebuie sa facem ceva de genul
+
         if(dataInceput == null || dataSfarsit == null)
         {
-            this.dataInceput = dataInceput;
-            this.dataSfarsit = dataSfarsit;
+            this.dataInceput = "01-01-2021";
+            this.dataSfarsit = "01-02-2021";
+            System.out.println("Trebuie introdusa o data valida de tipul Zi-Luna-An");
             return;
         }
 
-        int comparamDatele = dataInceput.compareTo(dataSfarsit);
 
-        if(comparamDatele <= 0) {
-//            System.out.println("Datele sunt introduse corect");
-            this.dataInceput = dataInceput;
-            this.dataSfarsit = dataSfarsit;
-        }
+        this.dataInceput = dataInceput;
+        this.dataSfarsit = dataSfarsit;
+
+//        int comparamDatele = dataInceput.compareTo(dataSfarsit);
+//
+//        if(comparamDatele <= 0) {
+////            System.out.println("Datele sunt introduse corect");
+//              this.dataInceput = dataInceput;
+//              this.dataSfarsit = dataSfarsit;
+//        }
+//        else{
+//            this.dataInceput = dataSfarsit;
+//            this.dataSfarsit = dataInceput;
+//        }
     }
 
     public Masina getMasina() {

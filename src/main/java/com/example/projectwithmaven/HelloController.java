@@ -10,9 +10,11 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.util.Pair;
 
-import java.util.Comparator;
-import java.util.List;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 public class HelloController {
 
@@ -26,7 +28,7 @@ public class HelloController {
         this.serviceInchirieri = serviceInchirieri;
     }
 
-    protected void afisareMasiniPrezenteInSQLite(){
+    protected void afisareMasiniPrezenteInSQLite() {
 
         // Done: Afisam masinile sortate crescator dupa ID-ul fiecareia
 
@@ -35,9 +37,9 @@ public class HelloController {
         List<Masina> listaMasini = serviceMasini.getAllEntities().stream()
                 .sorted(Comparator.comparing(Entitate::getId)).toList();
 
-        for(Masina masina : listaMasini){
+        for (Masina masina : listaMasini) {
             carNames.add("Masina cu ID-ul: " + masina.getId() + ", Marca: " + masina.getMarca() + ", Model: " + masina.getModel());
-            System.out.println(masina);
+//            System.out.println(masina);
         }
         carListView.setItems(carNames);
     }
@@ -85,8 +87,7 @@ public class HelloController {
         List<Inchiriere> listMasiniInchiriate = serviceInchirieri.getAllEntities();
 
         // Daca UPDATAM masina, automat trebuie sa o UPDATAM si din lista unde e inchiriata
-        for(int i = 0; i < listMasiniInchiriate.size(); i ++)
-        {
+        for (int i = 0; i < listMasiniInchiriate.size(); i++) {
             if (listMasiniInchiriate.get(i).getMasina().getId() == id) {
 
                 int idInchiriere = listMasiniInchiriate.get(i).getId();
@@ -104,6 +105,7 @@ public class HelloController {
 
     @FXML
     private TextField ID_Delete;
+
     @FXML
     private void onDeleteCarButtonClick() throws RepositoryException {
         // Implement logic to add a new car, for example, show a dialog or navigate to another scene
@@ -116,8 +118,8 @@ public class HelloController {
 
         // Delete in Cascada si pentru Inchirierile ale caror Masini au fost STERSE
         int contor = 0;
-        while(!serviceInchirieri.getAllEntities().isEmpty()){
-            if (serviceInchirieri.getAllEntities().get(contor).getMasina().getId() == id){
+        while (!serviceInchirieri.getAllEntities().isEmpty()) {
+            if (serviceInchirieri.getAllEntities().get(contor).getMasina().getId() == id) {
                 int idInchiriere = serviceInchirieri.getAllEntities().get(contor).getId(); // Luam ID-ul inchirierii unde se regaseste Masina pe care am sters-o
                 System.out.println("Inainte de stergerea inchirierii: " + serviceInchirieri.getAllEntities().size());
 
@@ -125,9 +127,8 @@ public class HelloController {
                 contor = 0;
 
                 System.out.println("Dupa stergerea inchirierii: " + serviceInchirieri.getAllEntities().size());
-            }
-            else {
-                contor ++;
+            } else {
+                contor++;
             }
         }
 
@@ -139,7 +140,7 @@ public class HelloController {
     @FXML
     public ListView<String> rentedCarsListView;
 
-    protected void afisareMasiniInchiriateInSQLite(){
+    protected void afisareMasiniInchiriateInSQLite() {
 
         // Done: Afisam masinile sortate crescator dupa ID-ul fiecareia
 
@@ -149,7 +150,7 @@ public class HelloController {
                 sorted(Comparator.comparing(Entitate::getId)).toList();
 
         System.out.println("Masini inchiriate");
-        for(Inchiriere inchiriere : listaMasiniInchiriate){
+        for (Inchiriere inchiriere : listaMasiniInchiriate) {
             rentedCarsNames.add("Inchirierea cu ID-ul: " + inchiriere.getId() + ", " +
                     "Masina cu ID-ul: " + inchiriere.getMasina().getId() + ", " +
                     "Marca: " + inchiriere.getMasina().getMarca() + ", " +
@@ -157,7 +158,7 @@ public class HelloController {
                     "Data Inceput: " + inchiriere.getDataInceput() + ", " +
                     "Data Sfarsit: " + inchiriere.getDataSfarsit());
 
-            System.out.println(inchiriere);
+//            System.out.println(inchiriere);
         }
         rentedCarsListView.setItems(rentedCarsNames);
     }
@@ -237,5 +238,171 @@ public class HelloController {
         // TODO Daca nu exista, aruncam o Alerta
         serviceInchirieri.delete(id_Inchiriere);
         afisareMasiniInchiriateInSQLite();
+    }
+
+    @FXML
+    public ListView<String> mostRentedCarsListView;
+
+    // Ideea e ca avem deja lista noastra de masini inchiriate, deci mai trebuie decat sa avem o lista separata cu toate masinile din aceasta lista,
+    // Si pentru asta, folosim o structura in care Map-ăm Pair<Marca,Modelul> := Key-ul, masinii inchiriate, si de fiecare data, retinem de cate ori este prezenta
+    // aceasta masina in lista noastra := Value
+    @FXML
+    private void onShowMostRentedCarsButtonClick() {
+        System.out.println("onShowMostRentedCarsButtonClick");
+
+        // (Marca, Model): nrAparitii
+        Map<Pair<String, String>, Integer> nrAparitiiMasina = new HashMap<>();
+
+        List<Inchiriere> listaMasiniInchiriate = serviceInchirieri.getAllEntities();
+
+        for (Inchiriere inchiriere : listaMasiniInchiriate) {
+            Masina masina = inchiriere.getMasina();
+
+            // Luam Marca si Modelul fiecarei masini adaugate deja in lista noastra de inchirieri
+            Pair<String, String> masinaInchiriata = new Pair<>(masina.getMarca(), masina.getModel());
+
+            // Verificam daca masina din lista de inchirieri apare de mai multe ori in Map ul nostru
+            if (containsKey(nrAparitiiMasina, masinaInchiriata)) {
+                // Daca avem aceasta masina adaugata
+                Integer value = nrAparitiiMasina.get(masinaInchiriata);
+                nrAparitiiMasina.put(masinaInchiriata, value + 1);
+            }
+            else{
+                // Daca masina pe care o avem la inchiriat, nu este inca adaugata in Map, o adaugam cu valoarea 1
+                int value = 0;
+                nrAparitiiMasina.put(masinaInchiriata, value + 1);
+            }
+        }
+
+        // Formam o lista cu masinile inchiriate, sortate descrescator dupa numarul de inchirieri din lista
+        List<Map.Entry<Pair<String, String>, Integer>> mostRentedCars = new ArrayList<>(nrAparitiiMasina.entrySet());
+
+        mostRentedCars.sort(Map.Entry.<Pair<String, String>, Integer>comparingByValue().reversed());
+
+        ObservableList<String> observabled_mostRentedCars = FXCollections.observableArrayList();
+
+        // Iterate over the sorted list and print key-value pairs
+        for (Map.Entry<Pair<String, String>, Integer> entry : mostRentedCars) {
+            Pair<String, String> atributeMasina = entry.getKey();
+            Integer nrAparitii = entry.getValue();
+            observabled_mostRentedCars.add("Masina inchiriata: " + atributeMasina.getKey() + " " + atributeMasina.getValue() + ", cu numarul de inchirieri: " + nrAparitii);
+
+            // Facem lista vizibila
+            mostRentedCarsListView.setItems(observabled_mostRentedCars);
+        }
+    }
+
+    // Verificam daca avem masina
+    private boolean containsKey(Map<Pair<String, String>, Integer> map, Pair<String, String> key) {
+        for (Pair<String, String> mapKey : map.keySet()) {
+            if (mapKey.getKey().equals(key.getKey()) && mapKey.getValue().equals(key.getValue())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @FXML
+    public ListView<String> mostRentedCarsPerMonthListView;
+
+    // Ideea e ca avem deja lista noastra de masini inchiriate, deci mai trebuie decat sa avem o lista separata cu toate masinile din aceasta lista,
+    // Si pentru asta, folosim o structura in care Map-ăm Pair<Luna,An> := Key-ul, masinii inchiriate, si de fiecare data, retinem cate masini sunt inchiriate
+    // in aceasta luna := Value
+    @FXML
+    private void onShowNrOfRentedCarsPerMonthButtonClick() {
+
+        // (Marca, Model): nrAparitii
+        Map<Pair<String, String>, Integer> nrInchirieriMasiniPerLuna = new HashMap<>();
+
+        List<Inchiriere> listaMasiniInchiriate = serviceInchirieri.getAllEntities();
+
+        for (Inchiriere inchiriere : listaMasiniInchiriate) {
+
+           // Ne intereseaza decat luna de inceput a inchirierii
+           String[] elemente_dataInceput = inchiriere.getDataInceput().split("-");
+           String luna = elemente_dataInceput[1];
+           String an = elemente_dataInceput[2];
+
+            // Luam luna si anul fiecarei masini inchiriate deja
+            Pair<String, String> lunaAn = new Pair<>(luna, an);
+
+            // Verificam daca masina din lista de inchirieri apare de mai multe ori in Map ul nostru
+            if (containsKey(nrInchirieriMasiniPerLuna, lunaAn)) {
+                // Daca avem aceasta masina adaugata
+                Integer value = nrInchirieriMasiniPerLuna.get(lunaAn);
+                nrInchirieriMasiniPerLuna.put(lunaAn, value + 1);
+            }
+            else{
+                // Daca masina pe care o avem la inchiriat, nu este inca adaugata in Map, o adaugam cu valoarea 1
+                int value = 0;
+                nrInchirieriMasiniPerLuna.put(lunaAn, value + 1);
+            }
+        }
+
+        // Formam o lista cu <luna, an>, sortate descrescator dupa numarul de inchirieri din lista
+        List<Map.Entry<Pair<String, String>, Integer>> monthsWithNrOfCars = new ArrayList<>(nrInchirieriMasiniPerLuna.entrySet());
+
+        monthsWithNrOfCars.sort(Map.Entry.<Pair<String, String>, Integer>comparingByValue().reversed());
+
+        ObservableList<String> observabled_monthsWithNrOfCars = FXCollections.observableArrayList();
+
+        // Iterate over the sorted list and print key-value pairs
+        for (Map.Entry<Pair<String, String>, Integer> entry : monthsWithNrOfCars) {
+            Pair<String, String> atributeMasina = entry.getKey();
+            Integer nrAparitii = entry.getValue();
+            observabled_monthsWithNrOfCars.add("Luna: " + atributeMasina.getKey() + ", anul: "  + " " + atributeMasina.getValue() + ", nr masini inchiriate: " + nrAparitii);
+
+            // Facem lista vizibila
+            mostRentedCarsPerMonthListView.setItems(observabled_monthsWithNrOfCars);
+        }
+    }
+
+    @FXML
+    public ListView<String> longestRentedCarsPerMonthListView;
+    @FXML
+    private void onShowLongestRentedCarsButtonClick() {
+        List<Inchiriere> listaMasiniInchiriate = serviceInchirieri.getAllEntities();
+        Map<Masina, Long> masinaPlusNrZileInchiriata = new HashMap<>();
+
+        long nrZileMasinaInchiriata = 0;
+        for (Inchiriere inchiriere : listaMasiniInchiriate) {
+            Masina masina = inchiriere.getMasina();
+            String dataInceput = inchiriere.getDataInceput();
+            String dataSfarsit = inchiriere.getDataSfarsit();
+
+            nrZileMasinaInchiriata = returneazaNrDeZile(dataInceput, dataSfarsit);
+
+            masinaPlusNrZileInchiriata.put(masina,nrZileMasinaInchiriata);
+        }
+
+        // Formam o lista cu masinile inchiriate, sortate descrescator dupa numarul de inchirieri din lista
+        List<Map.Entry<Masina, Long>> longestRentedCars = new ArrayList<>(masinaPlusNrZileInchiriata.entrySet());
+
+        // Sortam descrescator lista dupa Values
+        longestRentedCars.sort(Map.Entry.<Masina, Long>comparingByValue().reversed());
+
+        ObservableList<String> observabled_mostRentedCars = FXCollections.observableArrayList();
+
+        // Iterate over the sorted list and print key-value pairs
+        for (Map.Entry<Masina, Long> entry : longestRentedCars) {
+            Masina masina = entry.getKey();
+            Long nrAparitii = entry.getValue();
+//            System.out.println(masina + " " + nrAparitii);
+            observabled_mostRentedCars.add("Masina inchiriata: " + masina.getId() + " " + masina.getMarca() + " " + masina.getModel() + ", cu numarul de zile inchiriata: " + nrAparitii);
+//
+//            // Facem lista vizibila
+            longestRentedCarsPerMonthListView.setItems(observabled_mostRentedCars);
+        }
+    }
+    private Long returneazaNrDeZile(String dataInceput,  String dataSfarsit){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+        // Parsarea string-urilor in obiecte LocalDate
+        LocalDate date1 = LocalDate.parse(dataInceput, formatter);
+        LocalDate date2 = LocalDate.parse(dataSfarsit, formatter);
+
+        // Calcularea numărului de zile între cele două date
+        long nrZile = Math.abs(date1.toEpochDay() - date2.toEpochDay());
+        return nrZile;
     }
 }

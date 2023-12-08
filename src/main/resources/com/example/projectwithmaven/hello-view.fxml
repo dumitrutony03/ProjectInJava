@@ -4,48 +4,68 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="CENTER" prefHeight="103.0" prefWidth="135.0" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="CENTER" prefHeight="454.0" prefWidth="628.0" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
   <padding>
     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
   </padding>
 
-  <ListView fx:id="carListView"/>
+  <ListView fx:id="carListView" />
 
   <HBox>
-    <TextField fx:id="ID" promptText="ID"/>
-    <TextField fx:id="Marca" promptText="Marca"/>
-    <TextField fx:id="Model" promptText="Model"/>
-    <Button text="AddCar" onAction="#onAddCarButtonClick"/>
-    <Button text="UpdateCar" onAction="#onUpdateCarButtonClick"/>
+    <TextField fx:id="ID" promptText="ID" />
+    <TextField fx:id="Marca" promptText="Marca" />
+    <TextField fx:id="Model" promptText="Model" />
+    <Button onAction="#onAddCarButtonClick" text="AddCar" />
+    <Button onAction="#onUpdateCarButtonClick" text="UpdateCar" />
   </HBox>
 
   <HBox>
-    <TextField fx:id="ID_Delete" promptText="ID_Delete"/>
-    <Button text="DeleteCar" onAction="#onDeleteCarButtonClick"/>
+    <TextField fx:id="ID_Delete" promptText="ID_Delete" />
+    <Button onAction="#onDeleteCarButtonClick" text="DeleteCar" />
   </HBox>
 
-  <ListView fx:id="rentedCarsListView"/>
+  <ListView fx:id="rentedCarsListView" />
 
   <HBox>
-    <TextField fx:id="ID_Inchiriere" promptText="ID_Inchiriere"/>
-    <TextField fx:id="ID_Masina" promptText="ID_Masina"/>
-    <TextField fx:id="Data_Inceput" promptText="Data_Inceput"/>
-    <TextField fx:id="Data_Sfarsit" promptText="Data_Sfarsit"/>
-    <Button text="AddRentedCar" onAction="#onAddRentedCarButtonClick"/>
-  </HBox>
-
-  <HBox>
-    <TextField fx:id="ID_InchiriereUpdate" promptText="ID_InchiriereUpdate"/>
-    <TextField fx:id="ID_MasinaUpdate" promptText="ID_MasinaUpdate"/>
-    <TextField fx:id="Data_InceputUpdate" promptText="Data_InceputUpdate"/>
-    <TextField fx:id="Data_SfarsitUpdate" promptText="Data_SfarsitUpdate"/>
-    <Button text="UpdateRentedCar" onAction="#onUpdateRentedCarButtonClick"/>
+    <TextField fx:id="ID_Inchiriere" promptText="ID_Inchiriere" />
+    <TextField fx:id="ID_Masina" promptText="ID_Masina" />
+    <TextField fx:id="Data_Inceput" promptText="Data_Inceput" />
+    <TextField fx:id="Data_Sfarsit" promptText="Data_Sfarsit" />
+    <Button onAction="#onAddRentedCarButtonClick" text="AddRentedCar" />
   </HBox>
 
   <HBox>
-    <TextField fx:id="ID_InchiriereDelete" promptText="ID_InchiriereDelete"/>
-    <Button text="DeleteRentedCar" onAction="#onDeleteRentedCarButtonClick"/>
+    <TextField fx:id="ID_InchiriereUpdate" promptText="ID_InchiriereUpdate" />
+    <TextField fx:id="ID_MasinaUpdate" promptText="ID_MasinaUpdate" />
+    <TextField fx:id="Data_InceputUpdate" promptText="Data_InceputUpdate" />
+    <TextField fx:id="Data_SfarsitUpdate" promptText="Data_SfarsitUpdate" />
+    <Button onAction="#onUpdateRentedCarButtonClick" text="UpdateRentedCar" />
   </HBox>
 
+  <HBox>
+    <TextField fx:id="ID_InchiriereDelete" promptText="ID_InchiriereDelete" />
+    <Button onAction="#onDeleteRentedCarButtonClick" text="DeleteRentedCar" />
+  </HBox>
+
+  <HBox>
+
+    <VBox>
+    <Button onAction="#onShowMostRentedCarsButtonClick" prefHeight="26.0" prefWidth="206.0" text="ShowMostRentedCars" />
+    <ListView fx:id="mostRentedCarsListView" />
+    </VBox>
+      <AnchorPane prefHeight="67.0" prefWidth="78.0" />
+
+    <VBox>
+      <Button onAction="#onShowNrOfRentedCarsPerMonthButtonClick" prefHeight="26.0" prefWidth="206.0" text="ShowNrOfRentedCarsPerMonth" />
+      <ListView fx:id="mostRentedCarsPerMonthListView" />
+    </VBox>
+      <AnchorPane prefHeight="66.0" prefWidth="80.0" />
+
+    <VBox>
+      <Button onAction="#onShowLongestRentedCarsButtonClick" prefHeight="26.0" prefWidth="206.0" text="ShowLongestRentedCars" />
+      <ListView fx:id="longestRentedCarsPerMonthListView" />
+    </VBox>
+
+  </HBox>
 
 </VBox>
