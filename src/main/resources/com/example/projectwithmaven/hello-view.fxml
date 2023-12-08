@@ -57,7 +57,7 @@
 
   <HBox>
     <TextField fx:id="ID_InchiriereDelete" promptText="ID_InchiriereDelete" />
-      <AnchorPane prefHeight="26.0" prefWidth="4.0" />
+      <AnchorPane prefHeight="26.0" prefWidth="25.0" />
     <Button onAction="#onDeleteRentedCarButtonClick" text="DeleteRentedCar" />
   </HBox>
 
