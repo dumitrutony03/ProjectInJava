@@ -27,6 +27,6 @@ public class Masina extends Entitate {
     }
 
     public String toString() {
-        return "Domain.Masina [ID=" + this.getId() + ", Marca=" + this.getMarca() + ", Model=" + this.getModel() + "]";
+        return "Masina: [ID=" + this.getId() + ", Marca=" + this.getMarca() + ", Model=" + this.getModel() + "]";
     }
 }

@@ -3,37 +3,122 @@ package com.example.projectwithmaven.UserInterface;
 import com.example.projectwithmaven.Domain.Inchiriere;
 import com.example.projectwithmaven.Domain.Masina;
 import com.example.projectwithmaven.Repository.ExceptionRepository.RepositoryException;
-import com.example.projectwithmaven.Service.*;
+import com.example.projectwithmaven.Service.Service;
 
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class UI {
 
     Service<Masina> serviceMasini;
     Service<Inchiriere> serviceInchirieri;
+
     public UI(Service<Masina> serviceMasini, Service<Inchiriere> serviceInchirieri) {
         this.serviceMasini = serviceMasini;
         this.serviceInchirieri = serviceInchirieri;
     }
-    private void startWith5Entities() throws RepositoryException {
-        // Adăugăm 5 mașini si 5 inchirieri
 
-//        serviceMasini.add(new Domain.Masina(1, "Dacia", "Logan"));
-//        serviceMasini.add(new Domain.Masina(2, "Ford", "Focus"));
-//        serviceMasini.add(new Domain.Masina(3, "BMW", "X5"));
-//        serviceMasini.add(new Domain.Masina(4, "Audi", "A4"));
-//        serviceMasini.add(new Domain.Masina(5, "Mercedes", "C-Class"));
+    private void startWith100Entities() throws RepositoryException {
+        // Adăugăm 5 mașini si 5 inchirieri
+        List<Integer> idUriMasina = Arrays.asList(0, 1, 2, 3, 4);
+        List<String> marciMasina = Arrays.asList("Dacia", "Ford", "BMW", "Audi", "Mercedes");
+
+        List<String> Dacia = Arrays.asList("Sandero", "Logan");
+        List<String> Ford = Arrays.asList("Mondeo", "Mustang");
+        List<String> BMW = Arrays.asList("Seria 1", "Seria 3");
+        List<String> Audi = Arrays.asList("A3", "A4");
+        List<String> Mercedes = Arrays.asList("C-Klasse", "CLK");
+
+        Random numarRandom = new Random();
+        int nrMasiniDisponibile = 5;
+        for (int i = 0; i < 100; i++) {
+            int valuareRandom = numarRandom.nextInt(nrMasiniDisponibile); // Numere de la 0-4
+
+            int idMasina = idUriMasina.get(valuareRandom);
+            String marcaMasina = marciMasina.get(idMasina);
+
+            int nrModelePerMasiniDisponibile = 2;
+            int modelMasinaAles = new Random().nextInt(nrModelePerMasiniDisponibile);
+            String modelMasina;
+            Masina masina;
+
+            switch (marcaMasina) {
+                case "Dacia":
+                    modelMasina = Dacia.get(modelMasinaAles);
+                    masina = new Masina(i, marcaMasina, modelMasina);
+                    creeazaObiectInchirierePentru100DeEntitati(i, masina);
+
+//                    System.out.println(new Masina(i, marcaMasina, modelMasina));
+                    serviceMasini.add(new Masina(i, marcaMasina, modelMasina));
+                    break;
+                case "Ford":
+                    modelMasina = Ford.get(modelMasinaAles);
+                    masina = new Masina(i, marcaMasina, modelMasina);
+                    creeazaObiectInchirierePentru100DeEntitati(i, masina);
+
+//                    System.out.println(new Masina(i, marcaMasina, modelMasina));
+                    serviceMasini.add(new Masina(i, marcaMasina, modelMasina));
+                    break;
+                case "BMW":
+                    modelMasina = BMW.get(modelMasinaAles);
+                    masina = new Masina(i, marcaMasina, modelMasina);
+                    creeazaObiectInchirierePentru100DeEntitati(i, masina);
+
+//                    System.out.println(new Masina(i, marcaMasina, modelMasina));
+                    serviceMasini.add(new Masina(i, marcaMasina, modelMasina));
+                    break;
+                case "Audi":
+                    modelMasina = Audi.get(modelMasinaAles);
+                    masina = new Masina(i, marcaMasina, modelMasina);
+                    creeazaObiectInchirierePentru100DeEntitati(i, masina);
+
+//                    System.out.println(new Masina(i, marcaMasina, modelMasina));
+                    serviceMasini.add(new Masina(i, marcaMasina, modelMasina));
+                    break;
+                case "Mercedes":
+                    modelMasina = Mercedes.get(modelMasinaAles);
+                    masina = new Masina(i, marcaMasina, modelMasina);
+                    creeazaObiectInchirierePentru100DeEntitati(i, masina);
+
+//                    System.out.println(new Masina(i, marcaMasina, modelMasina));
+                    serviceMasini.add(new Masina(i, marcaMasina, modelMasina));
+                    break;
+            }
+        }
+
+//        serviceMasini.add(new Masina(1, "Dacia", "Logan"));
+//        serviceMasini.add(new Masina(2, "Ford", "Focus"));
+//        serviceMasini.add(new Masina(3, "BMW", "X5"));
+//        serviceMasini.add(new Masina(4, "Audi", "A4"));
+//        serviceMasini.add(new Masina(5, "Mercedes", "C-Class"));
 //        // TODO Sa adaugam aceeasi masina la inchiriat, daca diferita data de inceput si cea de sfarsit
 //
         // TODO De incercat sa nu adaugam o dataInceput > dataFinal, sau ceva caractere care nu s cifre
-//        serviceInchirieri.add(new Domain.Inchiriere(1, serviceMasini.findById(1), "10-01-2023", "10-01-2023"));
-//        serviceInchirieri.add(new Domain.Inchiriere(2, serviceMasini.findById(2), "11-01-2023", "20-01-2023"));
-//        serviceInchirieri.add(new Domain.Inchiriere(3, serviceMasini.findById(3), "01-02-2023", "10-02-2023"));
-//        serviceInchirieri.add(new Domain.Inchiriere(4, serviceMasini.findById(4), "21-01-2023", "30-01-2023"));
-//        serviceInchirieri.add(new Domain.Inchiriere(5, serviceMasini.findById(5), "11-02-2023", "20-02-2023"));
+//        serviceInchirieri.add(new Inchiriere(1, serviceMasini.findById(1), "10-01-2023", "10-01-2023"));
+//        serviceInchirieri.add(new Inchiriere(2, serviceMasini.findById(2), "11-01-2023", "20-01-2023"));
+//        serviceInchirieri.add(new Inchiriere(3, serviceMasini.findById(3), "01-02-2023", "10-02-2023"));
+//        serviceInchirieri.add(new Inchiriere(4, serviceMasini.findById(4), "21-01-2023", "30-01-2023"));
+//        serviceInchirieri.add(new Inchiriere(5, serviceMasini.findById(5), "11-02-2023", "20-02-2023"));
     }
 
+    private void creeazaObiectInchirierePentru100DeEntitati(int i, Masina masina) throws RepositoryException {
+        int idInchiriere = i;
+        String dataInceput, dataSfarsit;
+
+        int zi_dataInceput = new Random().nextInt(1,32);
+        int saptamana_dataInceput = new Random().nextInt(1,13);
+        int an_dataInceput = new Random().nextInt(2000,2024);
+
+        // Data de sfarsit, trebuie sa fie cel putin mai mare sau egala cu o zi fata de data de sfarsit.
+        int zi_dataSfarsit = new Random().nextInt(zi_dataInceput,32);
+        int saptamana_dataSfarsit = new Random().nextInt(saptamana_dataInceput,13);
+        int an_dataSfarsit = new Random().nextInt(an_dataInceput,2024);
+
+        dataInceput = zi_dataInceput + "-" + saptamana_dataInceput + "-" + an_dataInceput;
+        dataSfarsit = zi_dataSfarsit + "-" + saptamana_dataSfarsit + "-" + an_dataSfarsit;
+
+//        System.out.println(new Inchiriere(idInchiriere, masina, dataInceput, dataSfarsit));
+        serviceInchirieri.add(new Inchiriere(idInchiriere, masina, dataInceput, dataSfarsit));
+    }
     // Done
     public void addMasina() throws RepositoryException {
         Scanner scanner = new Scanner(System.in);
@@ -80,8 +165,7 @@ public class UI {
             List<Inchiriere> listMasiniInchiriate = serviceInchirieri.getAllEntities();
 
             // Daca stergem masina, automat trebuie sa o stergem si din lista unde e inchiriata
-            for(int i = 0; i < listMasiniInchiriate.size(); i ++)
-            {
+            for (int i = 0; i < listMasiniInchiriate.size(); i++) {
                 if (listMasiniInchiriate.get(i).getMasina().getId() == id) {
 
                     int idInchiriere = listMasiniInchiriate.get(i).getId();
@@ -124,8 +208,7 @@ public class UI {
             List<Inchiriere> listMasiniInchiriate = serviceInchirieri.getAllEntities();
 
             // Daca UPDATAM masina, automat trebuie sa o UPDATAM si din lista unde e inchiriata
-            for(int i = 0; i < listMasiniInchiriate.size(); i ++)
-            {
+            for (int i = 0; i < listMasiniInchiriate.size(); i++) {
                 if (listMasiniInchiriate.get(i).getMasina().getId() == id) {
 
                     int idInchiriere = listMasiniInchiriate.get(i).getId();
@@ -252,6 +335,7 @@ public class UI {
         serviceInchirieri.update(new Inchiriere(id, masina, dataInceput, dataSfarsit));
 
     }
+
     public void menuChoices() {
         // ToDo stergere masina, update
         System.out.println("1. Adauga o masina");
@@ -265,7 +349,7 @@ public class UI {
     }
 
     public void start() throws RepositoryException {
-        startWith5Entities();
+        startWith100Entities();
 
         int choice = 0;
         while (true) {

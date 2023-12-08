@@ -68,7 +68,7 @@ public class HelloController {
     @FXML
     private void onUpdateCarButtonClick() throws RepositoryException {
         // Implement logic to add a new car, for example, show a dialog or navigate to another scene
-        System.out.println("AddCar button clicked!");
+        System.out.println("UpdateCar button clicked!");
 
         int id = Integer.parseInt(ID.getText());
         String marca = Marca.getText();
@@ -104,26 +104,27 @@ public class HelloController {
     @FXML
     private void onDeleteCarButtonClick() throws RepositoryException {
         // Implement logic to add a new car, for example, show a dialog or navigate to another scene
-        System.out.println("AddCar button clicked!");
+        System.out.println("DeleteCar button clicked!");
 
         int id = Integer.parseInt(ID_Delete.getText());
 
         // TODO Daca nu exista, aruncam o Alerta
         serviceMasini.delete(id);
 
-        List<Inchiriere> listMasiniInchiriate = serviceInchirieri.getAllEntities();
+        // Delete in Cascada si pentru Inchirierile ale caror Masini au fost STERSE
+        int contor = 0;
+        while(!serviceInchirieri.getAllEntities().isEmpty()){
+            if (serviceInchirieri.getAllEntities().get(contor).getMasina().getId() == id){
+                int idInchiriere = serviceInchirieri.getAllEntities().get(contor).getId(); // Luam ID-ul inchirierii unde se regaseste Masina pe care am sters-o
+                System.out.println("Inainte de stergerea inchirierii: " + serviceInchirieri.getAllEntities().size());
 
-        // Daca stergem masina, automat trebuie sa o stergem si din lista unde e inchiriata
-        for(int i = 0; i < listMasiniInchiriate.size(); i ++)
-        {
-            if (listMasiniInchiriate.get(i).getMasina().getId() == id) {
-
-                int idInchiriere = listMasiniInchiriate.get(i).getId();
                 serviceInchirieri.delete(idInchiriere);
-                // Resetam i-ul, pentru ca avem probleme cand stergem o masina, dimensiunea Listei scade cu '1' (o unitate)
-                // Si se pot suprapune, si apoi 'i-ul' sa treaca peste lungimea sirului,
-                // sau exista sansa sa rateze Masini cu ID-ul care trebuie sters
-                i = 0;
+                contor = 0;
+
+                System.out.println("Dupa stergerea inchirierii: " + serviceInchirieri.getAllEntities().size());
+            }
+            else {
+                contor ++;
             }
         }
 
@@ -184,7 +185,7 @@ public class HelloController {
 
         // TODO Daca nu exista, aruncam o Alerta
         serviceInchirieri.add(inchiriere);
-        System.out.println("Am reusit sa updatam");
+        System.out.println("Am reusit sa adaugam masina la INCHIRIERE");
 
         afisareMasiniInchiriateInSQLite();
     }
@@ -225,7 +226,7 @@ public class HelloController {
     @FXML
     private void onDeleteRentedCarButtonClick() throws RepositoryException {
         // Implement logic to add a new car, for example, show a dialog or navigate to another scene
-        System.out.println("UpdateRentedCar button clicked!");
+        System.out.println("DeleteRentedCar button clicked!");
 
         int id_Inchiriere = Integer.parseInt(ID_InchiriereDelete.getText());
 

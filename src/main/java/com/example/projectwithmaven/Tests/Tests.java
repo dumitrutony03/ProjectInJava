@@ -39,7 +39,7 @@ public class Tests {
 
         //FIXME Compara atributele obiectelor
         assert (Objects.equals(masinaGasita, new Masina(1, "Volkswagen", "Passat")));
-//        assertEquals(masinaGasita, new Domain.Masina(1, "Volkswagen", "Passat")); // Compara adresele obiectelor
+//        assertEquals(masinaGasita, new Masina(1, "Volkswagen", "Passat")); // Compara adresele obiectelor
 
         masinaRepositoryBinary.delete(1);
         assertEquals(masinaRepositoryBinary.getAllEntities().size(), 0);
@@ -93,7 +93,7 @@ public class Tests {
 
         //FIXME Compara atributele obiectelor
         assert (Objects.equals(masinaGasita, new Masina(1, "Volkswagen", "Passat")));
-//        assertEquals(masinaGasita, new Domain.Masina(1, "Volkswagen", "Passat")); // Compara adresele obiectelor
+//        assertEquals(masinaGasita, new Masina(1, "Volkswagen", "Passat")); // Compara adresele obiectelor
 
         Masina masinaFind = masinaRepositoryTextFile.findById(2);
         assertNull(masinaFind);
@@ -151,7 +151,7 @@ public class Tests {
         assertEquals(serviceMasini.getAllEntities().size(),0);
     }
 
-                                    /// Domain.Masina
+                                    /// Masina
 
     @Test
     private static void MasinaTest(){
@@ -166,14 +166,14 @@ public class Tests {
         assertEquals(masina.getModel(), "412");
         assertEquals(masina.getMarca(), "Pista");
 
-        assertEquals(masina.toString(), "Domain.Masina [ID=" + masina.getId() + ", Marca=" + masina.getMarca() + ", Model=" + masina.getModel() + "]");
+        assertEquals(masina.toString(), "Masina: [ID=" + masina.getId() + ", Marca=" + masina.getMarca() + ", Model=" + masina.getModel() + "]");
 
         masina.setId(2);
         assertEquals(masina.getId(), 2);
 
     }
 
-                        /// Domain.Inchiriere
+                        /// Inchiriere
 
     @Test
     private static void InchiriereTest(){
@@ -190,7 +190,7 @@ public class Tests {
         inchiriere.setDataInceput("01-06-2020");
         inchiriere.setDataSfarsit("01-08-2020");
 
-        assertEquals(inchiriere.toString(), "Domain.Inchiriere [ID= " + inchiriere.getId() + ", Domain.Masina= " + inchiriere.getMasina() + ", DataInceput= " +inchiriere.getDataInceput() + ", DataSfarsit= " + inchiriere.getDataSfarsit());
+        assertEquals(inchiriere.toString(), "Inchiriere: [ID= " + inchiriere.getId() + ", Masina= " + inchiriere.getMasina() + ", DataInceput= " +inchiriere.getDataInceput() + ", DataSfarsit= " + inchiriere.getDataSfarsit());
 
         inchiriere.setMasina(new Masina(1, "Ferrari", "412"));
         assertEquals(inchiriere.getMasina().getModel(), "412");

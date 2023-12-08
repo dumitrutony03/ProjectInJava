@@ -51,6 +51,6 @@ public class Inchiriere extends Entitate {
     }
 
     public String toString() {
-        return "Domain.Inchiriere [ID= " + getId() + ", Domain.Masina= " + getMasina() + ", DataInceput= " + getDataInceput() + ", DataSfarsit= " + getDataSfarsit();
+        return "Inchiriere: [ID= " + getId() + ", Masina= " + getMasina() + ", DataInceput= " + getDataInceput() + ", DataSfarsit= " + getDataSfarsit();
     }
 }
