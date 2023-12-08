@@ -13,14 +13,19 @@
 
   <HBox>
     <TextField fx:id="ID" promptText="ID" />
-    <TextField fx:id="Marca" promptText="Marca" />
+      <AnchorPane prefHeight="26.0" prefWidth="4.0" />
+    <TextField fx:id="Marca" prefHeight="26.0" prefWidth="150.0" promptText="Marca" />
+      <AnchorPane prefHeight="26.0" prefWidth="4.0" />
     <TextField fx:id="Model" promptText="Model" />
+      <AnchorPane prefHeight="26.0" prefWidth="4.0" />
     <Button onAction="#onAddCarButtonClick" text="AddCar" />
+      <AnchorPane prefHeight="200.0" prefWidth="4.0" />
     <Button onAction="#onUpdateCarButtonClick" text="UpdateCar" />
   </HBox>
 
   <HBox>
     <TextField fx:id="ID_Delete" promptText="ID_Delete" />
+      <AnchorPane prefHeight="200.0" prefWidth="4.0" />
     <Button onAction="#onDeleteCarButtonClick" text="DeleteCar" />
   </HBox>
 
@@ -28,22 +33,31 @@
 
   <HBox>
     <TextField fx:id="ID_Inchiriere" promptText="ID_Inchiriere" />
+      <AnchorPane prefHeight="26.0" prefWidth="25.0" />
     <TextField fx:id="ID_Masina" promptText="ID_Masina" />
+      <AnchorPane prefHeight="200.0" prefWidth="25.0" />
     <TextField fx:id="Data_Inceput" promptText="Data_Inceput" />
+      <AnchorPane prefHeight="200.0" prefWidth="25.0" />
     <TextField fx:id="Data_Sfarsit" promptText="Data_Sfarsit" />
+      <AnchorPane prefHeight="200.0" prefWidth="25.0" />
     <Button onAction="#onAddRentedCarButtonClick" text="AddRentedCar" />
   </HBox>
 
   <HBox>
     <TextField fx:id="ID_InchiriereUpdate" promptText="ID_InchiriereUpdate" />
+      <AnchorPane prefHeight="26.0" prefWidth="25.0" />
     <TextField fx:id="ID_MasinaUpdate" promptText="ID_MasinaUpdate" />
+      <AnchorPane prefHeight="200.0" prefWidth="25.0" />
     <TextField fx:id="Data_InceputUpdate" promptText="Data_InceputUpdate" />
+      <AnchorPane prefHeight="200.0" prefWidth="25.0" />
     <TextField fx:id="Data_SfarsitUpdate" promptText="Data_SfarsitUpdate" />
+      <AnchorPane prefHeight="200.0" prefWidth="25.0" />
     <Button onAction="#onUpdateRentedCarButtonClick" text="UpdateRentedCar" />
   </HBox>
 
   <HBox>
     <TextField fx:id="ID_InchiriereDelete" promptText="ID_InchiriereDelete" />
+      <AnchorPane prefHeight="26.0" prefWidth="4.0" />
     <Button onAction="#onDeleteRentedCarButtonClick" text="DeleteRentedCar" />
   </HBox>
 
