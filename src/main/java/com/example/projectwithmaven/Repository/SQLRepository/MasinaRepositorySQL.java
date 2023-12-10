@@ -41,7 +41,7 @@ public class MasinaRepositorySQL<T extends Entitate> extends GenericRepository<M
         // 'INSERT INTO Domain.Masina VALUES (?,?,?,...)'
         // 2. Daca nu avem exceptii, adaugat in data
 
-        System.out.println("Adaugam o Domain.Masina");
+        System.out.println("Adaugam o Masina");
 
         try {
             try (PreparedStatement statement = conn.prepareStatement("INSERT INTO Masina VALUES (?, ?, ?)")) {
@@ -49,9 +49,9 @@ public class MasinaRepositorySQL<T extends Entitate> extends GenericRepository<M
                 statement.setString(2, masina.getMarca());
                 statement.setString(3, masina.getModel());
 
-                statement.executeUpdate();
-
                 super.add(masina);
+
+                statement.executeUpdate();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -64,10 +64,10 @@ public class MasinaRepositorySQL<T extends Entitate> extends GenericRepository<M
 
         try {
             try (PreparedStatement statement = conn.prepareStatement("DELETE FROM Masina WHERE id =" + ID)) {
+                super.delete(ID);
                 statement.executeUpdate();
 
                 // FIXME - Trebuie stearsa masina cu Id-ul = ID, fara sa mai luam toate masinile din Baza de date mereu si mereu
-                super.delete(ID);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -86,6 +86,8 @@ public class MasinaRepositorySQL<T extends Entitate> extends GenericRepository<M
                 statement.setString(2, masina.getModel());
                 statement.setInt(3, masina.getId());
 
+                super.update(masina);
+
                 // Step 4: Execute the update statement
                 int rowsAffected = statement.executeUpdate();
 
@@ -94,10 +96,10 @@ public class MasinaRepositorySQL<T extends Entitate> extends GenericRepository<M
                 } else {
                     System.out.println("Masina with ID " + masina.getId() + " not found.");
                 }
-                super.update(masina);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException | RepositoryException e) {
+            System.out.println(e.getMessage());
+//            System.out.println(new RepositoryException(e.toString(), e));
         }
     }
 

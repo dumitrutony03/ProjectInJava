@@ -117,23 +117,23 @@ public class HelloController {
         serviceMasini.delete(id);
 
         // Delete in Cascada si pentru Inchirierile ale caror Masini au fost STERSE
+
         int contor = 0;
-        while (!serviceInchirieri.getAllEntities().isEmpty()) {
+        while (contor < serviceInchirieri.getAllEntities().size()) {
             if (serviceInchirieri.getAllEntities().get(contor).getMasina().getId() == id) {
                 int idInchiriere = serviceInchirieri.getAllEntities().get(contor).getId(); // Luam ID-ul inchirierii unde se regaseste Masina pe care am sters-o
-                System.out.println("Inainte de stergerea inchirierii: " + serviceInchirieri.getAllEntities().size());
 
                 serviceInchirieri.delete(idInchiriere);
-                contor = 0;
+                contor --;
 
                 System.out.println("Dupa stergerea inchirierii: " + serviceInchirieri.getAllEntities().size());
             } else {
-                contor++;
+                contor ++;
             }
         }
-
         afisareMasiniPrezenteInSQLite();
         afisareMasiniInchiriateInSQLite();
+
     }
 
     // Preparing the GUI for rented cars
@@ -266,8 +266,7 @@ public class HelloController {
                 // Daca avem aceasta masina adaugata
                 Integer value = nrAparitiiMasina.get(masinaInchiriata);
                 nrAparitiiMasina.put(masinaInchiriata, value + 1);
-            }
-            else{
+            } else {
                 // Daca masina pe care o avem la inchiriat, nu este inca adaugata in Map, o adaugam cu valoarea 1
                 int value = 0;
                 nrAparitiiMasina.put(masinaInchiriata, value + 1);
@@ -318,10 +317,10 @@ public class HelloController {
 
         for (Inchiriere inchiriere : listaMasiniInchiriate) {
 
-           // Ne intereseaza decat luna de inceput a inchirierii
-           String[] elemente_dataInceput = inchiriere.getDataInceput().split("-");
-           String luna = elemente_dataInceput[1];
-           String an = elemente_dataInceput[2];
+            // Ne intereseaza decat luna de inceput a inchirierii
+            String[] elemente_dataInceput = inchiriere.getDataInceput().split("-");
+            String luna = elemente_dataInceput[1];
+            String an = elemente_dataInceput[2];
 
             // Luam luna si anul fiecarei masini inchiriate deja
             Pair<String, String> lunaAn = new Pair<>(luna, an);
@@ -331,8 +330,7 @@ public class HelloController {
                 // Daca avem aceasta masina adaugata
                 Integer value = nrInchirieriMasiniPerLuna.get(lunaAn);
                 nrInchirieriMasiniPerLuna.put(lunaAn, value + 1);
-            }
-            else{
+            } else {
                 // Daca masina pe care o avem la inchiriat, nu este inca adaugata in Map, o adaugam cu valoarea 1
                 int value = 0;
                 nrInchirieriMasiniPerLuna.put(lunaAn, value + 1);
@@ -350,7 +348,7 @@ public class HelloController {
         for (Map.Entry<Pair<String, String>, Integer> entry : monthsWithNrOfCars) {
             Pair<String, String> atributeMasina = entry.getKey();
             Integer nrAparitii = entry.getValue();
-            observabled_monthsWithNrOfCars.add("Luna: " + atributeMasina.getKey() + ", anul: "  + " " + atributeMasina.getValue() + ", nr masini inchiriate: " + nrAparitii);
+            observabled_monthsWithNrOfCars.add("Luna: " + atributeMasina.getKey() + ", anul: " + " " + atributeMasina.getValue() + ", nr masini inchiriate: " + nrAparitii);
 
             // Facem lista vizibila
             mostRentedCarsPerMonthListView.setItems(observabled_monthsWithNrOfCars);
@@ -359,6 +357,7 @@ public class HelloController {
 
     @FXML
     public ListView<String> longestRentedCarsPerMonthListView;
+
     @FXML
     private void onShowLongestRentedCarsButtonClick() {
         List<Inchiriere> listaMasiniInchiriate = serviceInchirieri.getAllEntities();
@@ -372,7 +371,7 @@ public class HelloController {
 
             nrZileMasinaInchiriata = returneazaNrDeZile(dataInceput, dataSfarsit);
 
-            masinaPlusNrZileInchiriata.put(masina,nrZileMasinaInchiriata);
+            masinaPlusNrZileInchiriata.put(masina, nrZileMasinaInchiriata);
         }
 
         // Formam o lista cu masinile inchiriate, sortate descrescator dupa numarul de inchirieri din lista
@@ -394,7 +393,8 @@ public class HelloController {
             longestRentedCarsPerMonthListView.setItems(observabled_mostRentedCars);
         }
     }
-    private Long returneazaNrDeZile(String dataInceput,  String dataSfarsit){
+
+    private Long returneazaNrDeZile(String dataInceput, String dataSfarsit) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
         // Parsarea string-urilor in obiecte LocalDate
